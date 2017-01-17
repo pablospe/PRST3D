@@ -106,7 +106,7 @@ while(interactive)
     phi = phi_domain(k);
 
     fprintf('PRST = %f, rho = %d, th = %d, phi = %d\n', ...
-             hough_space(i,j,k), rho, rad2deg(th_domain(j)), rad2deg(phi_domain(k)))
+             hough_space(i,j,k), rho, rad2deg(th), rad2deg(phi))
 
     figure(2)
     clf

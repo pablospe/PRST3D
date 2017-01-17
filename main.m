@@ -7,7 +7,7 @@ plot_volume(V);
 
 
 %% find_symmetries
-n_samples = 8000;
+n_samples = 2000;
 
 % sampling orientation (in degree)
 theta_spacing = 2;
@@ -26,8 +26,8 @@ phi_max = 180;
 min_height = 0.5;
 min_dist = 0.5;
 
-type = 'vertical';
-% type = 'all';
+% type = 'vertical';
+type = 'all';
 [hough_space, locs, sym] = ...
     find_symmetries(V, theta_spacing, phi_spacing, rho_spacing, ...
                     n_samples, th_max, phi_max, min_height, min_dist, type);
@@ -41,8 +41,8 @@ sz = size(V);
 use_dim = true(1, ndims(hough_space));
 
 hough = hough_space ./ max(hough_space(:));
-min_height = 0.6;       % percent
-min_dist = sz(1) * 0.6; % percent
+min_height = 0.3;       % percent
+min_dist = sz(1) * 0.3; % percent
 
 tic;
 p = findpeaksn(hough, use_dim, min_height, min_dist);
