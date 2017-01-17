@@ -1,13 +1,13 @@
 %% load env
-clearvars; close all
+% clearvars; close all
 
 %% load reconstruction
-V  = loadFromDataFile('chair04_cutout_grad.dat');
+% V  = loadFromDataFile('chair04_cutout_grad.dat');
 plot_volume(V);
 
 
 %% find_symmetries
-n_samples = 8000;
+n_samples = 2000;
 
 % sampling orientation (in degree)
 theta_spacing = 2;
@@ -27,7 +27,8 @@ min_height = 0.6;
 min_dist = 0.6;
 
 % type = 'vertical';
-type = 'all';
+type = 'horizontal';
+% type = 'all';
 [hough_space, locs, sym] = ...
     find_symmetries(V, theta_spacing, phi_spacing, rho_spacing, ...
                     n_samples, th_max, phi_max, min_height, min_dist, type);
@@ -40,6 +41,7 @@ clf
 hough = hough_space ./ max(hough_space(:));
 % all_values_sorted = unique(sort(hough(:)));
 
+rho_domain = -r_max:rho_spacing:r_max;
 idx = find(hough(:));
 PRST = hough(idx);
 sz = length(idx);
@@ -108,6 +110,10 @@ while(interactive)
     fprintf('PRST = %f, rho = %d, th = %d, phi = %d\n', ...
              hough_space(i,j,k), rho, rad2deg(th), rad2deg(phi))
 
+    figure(1)
+    clf
+    plot_volume_with_plane(V,rho,th,phi)
+    
     figure(2)
     clf
     plot_support(V, rho, th, phi);

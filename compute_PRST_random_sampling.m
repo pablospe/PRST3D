@@ -48,7 +48,7 @@ function hough_space = compute_PRST_random_sampling(V,rho_spacing, ...
     % find points where f is not '0'
     [x,y,z] = ind2sub(n, k);
 
-    vertical_tol = deg2rad(theta_spacing);
+    degree_tol = deg2rad(theta_spacing);
 
     parfor i=1:n_samples
 %     for i=1:n_samples
@@ -68,13 +68,15 @@ function hough_space = compute_PRST_random_sampling(V,rho_spacing, ...
         % get closest index in discrete th vector
         [~, th_index] = min(abs(th-th_sample));
         th_sample = th(th_index);
+        
+        % get closest index in discrete phi vector
+        [~, phi_index] = min(abs(phi-phi_sample));
+        phi_sample = phi(phi_index);
 
-        % Check if it is vertical, otherwise continue
-        if(strcmp(type,'vertical') && abs(th_sample - pi/2) < vertical_tol || ~strcmp(type,'vertical'))
-            % get closest index in discrete phi vector
-            [~, phi_index] = min(abs(phi-phi_sample));
-            phi_sample = phi(phi_index);
-
+        % Check if it is vertical or horizontal, otherwise continue
+        if(strcmp(type,'vertical')   && abs(th_sample - pi/2)  < degree_tol || ...
+           strcmp(type,'horizontal') && abs(phi_sample - pi/2) < degree_tol || ...
+           ~(strcmp(type,'vertical') || strcmp(type,'horizontal')))
             % compute PRST for this two points
             f_refl = find_reflected_volume_fast(f, rho_sample, th_sample, ...
                                                 phi_sample, x, y, z, n_pts);
