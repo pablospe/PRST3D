@@ -11,5 +11,5 @@ function plot_volume_with_plane(V,rho,th,phi)
 %     view([-70,25])
 
     hold off
-    title('plot symmetries')
+%     title('plot symmetries')
 end

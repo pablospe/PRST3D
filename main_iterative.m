@@ -5,9 +5,20 @@
 % V  = loadFromDataFile('chair04_cutout_grad.dat');
 plot_volume(V);
 
+% %% Gradient
+% kernel = zeros([3 3 3]);
+% kernel(2,2,1) = -1; kernel(2,1,2) = -1; kernel(1,2,2) = -1;
+% kernel(3,2,2) =  1; kernel(2,3,2) =  1; kernel(2,2,3) =  1;
+% display(kernel)
+% 
+% Vgrad = convn(V, kernel, 'same');
+% Vgrad = Vgrad ./ max(Vgrad(:));
+% Vgrad(abs(Vgrad)<0.4) = 0;
+% plot_volume(Vgrad);
+% % V = Vgrad
 
 %% find_symmetries
-n_samples = 2000;
+n_samples = 4000;
 
 % sampling orientation (in degree)
 theta_spacing = 2;
@@ -41,7 +52,12 @@ clf
 hough = hough_space ./ max(hough_space(:));
 % all_values_sorted = unique(sort(hough(:)));
 
+sz = size(V);
+r_max = round(max(sz) * sqrt(2));
 rho_domain = -r_max:rho_spacing:r_max;
+th_domain  = deg2rad(0:theta_spacing:th_max);
+phi_domain = deg2rad(0:phi_spacing:phi_max);
+
 idx = find(hough(:));
 PRST = hough(idx);
 sz = length(idx);
@@ -86,6 +102,8 @@ domain = 1:step:length(phi_domain);
 set(gca,'ZTick', domain);
 set(gca,'ZTickLabel', rad2deg(phi_domain(domain)) );
 
+% axis square
+axis equal
 % view(az,el)
 
 
@@ -113,9 +131,38 @@ while(interactive)
     figure(1)
     clf
     plot_volume_with_plane(V,rho,th,phi)
+    % axis square;
+    cameratoolbar('Show')
+    cameratoolbar('SetMode', 'orbit')
+    cameratoolbar('SetCoordSys','z')
+    view(-90, -79)
+
+    grid off;
+    axis off;
+    set(gcf,'color','w');
     
-    figure(2)
-    clf
-    plot_support(V, rho, th, phi);
-    view([-70,25])
+%     figure(2)
+%     clf
+%     plot_support(V, rho, th, phi);
+%     view([-70,25])
 end
+
+
+%%
+figure(1)
+clf
+plot_volume_with_plane(V,rho,th,phi)
+% axis square;
+cameratoolbar('Show')
+cameratoolbar('SetMode', 'orbit')
+cameratoolbar('SetCoordSys','z')
+view(-90, -79)
+
+grid off;
+axis off;
+set(gcf,'color','w');
+
+%% 
+export_fig('357_13_01', '-pdf', '-png')
+
+

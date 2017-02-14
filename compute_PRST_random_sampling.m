@@ -49,6 +49,10 @@ function hough_space = compute_PRST_random_sampling(V,rho_spacing, ...
     [x,y,z] = ind2sub(n, k);
 
     degree_tol = deg2rad(theta_spacing);
+    
+    if n_samples > n_pts
+        n_samples = n_pts;
+    end
 
     parfor i=1:n_samples
 %     for i=1:n_samples
